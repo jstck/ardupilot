@@ -11,5 +11,7 @@
 #include "AP_MotorsOcta.h"
 #include "AP_MotorsOctaQuad.h"
 #include "AP_MotorsHeli.h"
+#include "AP_MotorsY4.h"
+#include "AP_MotorsY4V.h"
 
 #endif // __AP_MOTORS_H__

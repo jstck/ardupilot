@@ -78,10 +78,15 @@
 #define OCTA_FRAME 4
 #define HELI_FRAME 5
 #define OCTA_QUAD_FRAME 6
+#define Y4_FRAME 7
+#define Y4V_FRAME 8
 
 #define PLUS_FRAME 0
 #define X_FRAME 1
 #define V_FRAME 2
+
+#define Y4V_V_TAIL 0
+#define Y4V_A_TAIL 1
 
 // LED output
 #define NORMAL_LEDS 0

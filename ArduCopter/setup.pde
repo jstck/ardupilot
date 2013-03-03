@@ -1046,6 +1046,14 @@ static void report_frame()
     cliSerial->printf_P(PSTR("Octa frame\n"));
  #elif FRAME_CONFIG == HELI_FRAME
     cliSerial->printf_P(PSTR("Heli frame\n"));
+ #elif FRAME_CONFIG == Y4_FRAME
+    cliSerial->printf_P(PSTR("Y4 frame\n"));
+ #elif FRAME_CONFIG == Y4V_FRAME
+    #if Y4V_TAIL == Y4V_V_TAIL
+      cliSerial->printf_P(PSTR("Y4V frame, V-tail\n"));
+    #else
+      cliSerial->printf_P(PSTR("Y4V frame, A-tail\n"));
+    #endif
  #endif
 
  #if FRAME_CONFIG != HELI_FRAME

@@ -401,24 +401,22 @@ static uint8_t receiver_rssi;
 ////////////////////////////////////////////////////////////////////////////////
 #if FRAME_CONFIG == QUAD_FRAME
  #define MOTOR_CLASS AP_MotorsQuad
-#endif
-#if FRAME_CONFIG == TRI_FRAME
+#elif FRAME_CONFIG == TRI_FRAME
  #define MOTOR_CLASS AP_MotorsTri
-#endif
-#if FRAME_CONFIG == HEXA_FRAME
+#elif FRAME_CONFIG == HEXA_FRAME
  #define MOTOR_CLASS AP_MotorsHexa
-#endif
-#if FRAME_CONFIG == Y6_FRAME
+#elif FRAME_CONFIG == Y6_FRAME
  #define MOTOR_CLASS AP_MotorsY6
-#endif
-#if FRAME_CONFIG == OCTA_FRAME
+#elif FRAME_CONFIG == OCTA_FRAME
  #define MOTOR_CLASS AP_MotorsOcta
-#endif
-#if FRAME_CONFIG == OCTA_QUAD_FRAME
+#elif FRAME_CONFIG == OCTA_QUAD_FRAME
  #define MOTOR_CLASS AP_MotorsOctaQuad
-#endif
-#if FRAME_CONFIG == HELI_FRAME
+#elif FRAME_CONFIG == HELI_FRAME
  #define MOTOR_CLASS AP_MotorsHeli
+#elif FRAME_CONFIG == Y4_FRAME
+ #define MOTOR_CLASS AP_MotorsY4
+#elif FRAME_CONFIG == Y4V_FRAME
+ #define MOTOR_CLASS AP_MotorsY4V
 #endif
 
 #if FRAME_CONFIG == HELI_FRAME  // helicopter constructor requires more arguments
