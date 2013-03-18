@@ -13,14 +13,15 @@
 
 /*
 
-These defines are set in config.h, can be overridden in APM_Config.h
-
 Y4V_TAIL - Direction of the V-tail (up or down)
 Y4V_V_TAIL - Tail motors tilted inward ("V"-shaped)
 Y4V_A_TAIL - Tail motors tilted outward (upside-down V is an "A")
 
 
-Y4V_TAIL_WIDTH - Width between tail rotors as fraction of "main width"
+Y4V_TAIL_WIDTH - Width between tail rotors as fraction of "main width" (distance between front rotors),
+                 measured perpendicular to the motor axis. This value will depend on width, tilt angle,
+                 and height above/below the roll axis. It is only used to determine the tail rotors effect
+                 on roll.
 
 
 Y4V_TAIL_ANGLE - Tail motor tilt angle from vertical, in degrees
@@ -57,16 +58,14 @@ void AP_MotorsY4V::setup_motors()
     //A tail motors efficiency in vertical lift
     float lift_efficiency = cos(tilt_angle);
 
-    //How much a tail motor contributes to roll. The actual "v-boom" length (which is perpendicular to roll axis)
-    //is width / cos(tilt_angle)
-    float roll_force = Y4V_TAIL_WIDTH / lift_efficiency;
 
     //Yaw force of a tail motor is from two different factors, the rotational momentum of the prop (just as when yawing a quad),
-    //and the "sideways pull" from the tilt. This is scaled up so 1.0 equals a horizontal prop. Tilted motors will have lots more.
-    //The frames are set up so these two factors work together in the tail motors to yaw the copter, so they're summed up.
+    //and the "sideways pull" from the tilt. This is scaled up so 1.0 equals a horizontal prop (only rotational momentum).
+    //Tilted motors will have lots more (about 10 times or so more for about 30 degrees angle)
+    //The frames are set up so these two forces work together in the tail motors to yaw the copter, so they're summed up.
     //For a 0 degree tilt angle, you will only have the "normal yaw", for 90 degree you would get the full pull of the motor sideways.
 
-    float yaw_force = lift_efficiency + sin(tilt_angle) / Y4V_YAW_FACTOR;
+    float yaw_force = sin(tilt_angle) + cos(tilt_angle) / Y4V_YAW_FACTOR;
 
 
     //The front motors will actually contribute to yaw as well (1.0 of it). While you might want to have the software see this
@@ -78,13 +77,13 @@ void AP_MotorsY4V::setup_motors()
 #if Y4V_TAIL == Y4V_V_TAIL
     add_motor_raw(AP_MOTORS_MOT_1,  1.0,  0.666, AP_MOTORS_MATRIX_MOTOR_CCW); //Front left, CCW
     add_motor_raw(AP_MOTORS_MOT_2, -1.0,  0.666, AP_MOTORS_MATRIX_MOTOR_CW);  //Front right, CW
-    add_motor_raw(AP_MOTORS_MOT_3, -roll_force, -1.333*lift_efficiency, AP_MOTORS_MATRIX_MOTOR_CW*yaw_force);  //Tail right, CCW
-    add_motor_raw(AP_MOTORS_MOT_4,  roll_force, -1.333*lift_efficiency, AP_MOTORS_MATRIX_MOTOR_CCW*yaw_force); //Tail left, CW
+    add_motor_raw(AP_MOTORS_MOT_3, -Y4V_TAIL_WIDTH, -1.333*lift_efficiency, AP_MOTORS_MATRIX_MOTOR_CW*yaw_force);  //Tail right, CCW
+    add_motor_raw(AP_MOTORS_MOT_4,  Y4V_TAIL_WIDTH, -1.333*lift_efficiency, AP_MOTORS_MATRIX_MOTOR_CCW*yaw_force); //Tail left, CW
 #else //A tail
     add_motor_raw(AP_MOTORS_MOT_1,  1.0,  0.666, AP_MOTORS_MATRIX_MOTOR_CW); //Front left, CW
     add_motor_raw(AP_MOTORS_MOT_2, -1.0,  0.666, AP_MOTORS_MATRIX_MOTOR_CCW);  //Front right, CCW
-    add_motor_raw(AP_MOTORS_MOT_3, -roll_force, -1.333*lift_efficiency, AP_MOTORS_MATRIX_MOTOR_CCW*yaw_force);  //Tail right, CW
-    add_motor_raw(AP_MOTORS_MOT_4,  roll_force, -1.333*lift_efficiency, AP_MOTORS_MATRIX_MOTOR_CW*yaw_force); //Tail left, CCW
+    add_motor_raw(AP_MOTORS_MOT_3, -Y4V_TAIL_WIDTH, -1.333*lift_efficiency, AP_MOTORS_MATRIX_MOTOR_CCW*yaw_force);  //Tail right, CW
+    add_motor_raw(AP_MOTORS_MOT_4,  Y4V_TAIL_WIDTH, -1.333*lift_efficiency, AP_MOTORS_MATRIX_MOTOR_CW*yaw_force); //Tail left, CCW
 #endif
 
 }
