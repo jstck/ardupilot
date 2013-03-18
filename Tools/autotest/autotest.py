@@ -7,6 +7,7 @@ import optparse, fnmatch, time, glob, traceback, signal
 
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), 'pysim'))
 sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..', '..', 'mavlink', 'pymavlink'))
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.realpath(__file__)), '..', '..', '..', 'mavlink', 'pymavlink', 'generator'))
 import util
 
 os.environ['PYTHONUNBUFFERED'] = '1'
@@ -76,6 +77,14 @@ def build_all():
         return False
     return True
 
+def build_binaries():
+    '''run the build_binaries.sh script'''
+    print("Running build_binaries.sh")
+    if util.run_cmd(util.reltopdir('Tools/scripts/build_binaries.sh'), dir=util.reltopdir('.')) != 0:
+        print("Failed build_binaries.sh")
+        return False
+    return True
+
 def build_examples():
     '''run the build_examples.sh script'''
     print("Running build_examples.sh")
@@ -90,7 +99,7 @@ def convert_gpx():
     import glob
     mavlog = glob.glob(util.reltopdir("../buildlogs/*.mavlog"))
     for m in mavlog:
-        util.run_cmd(util.reltopdir("../pymavlink/examples/mavtogpx.py") + " --nofixcheck " + m)
+        util.run_cmd(util.reltopdir("../mavlink/pymavlink/examples/mavtogpx.py") + " --nofixcheck " + m)
         gpx = m + '.gpx'
         kml = m + '.kml'
         util.run_cmd('gpsbabel -i gpx -f %s -o kml,units=m,floating=1,extrude=1 -F %s' % (gpx, kml), checkfail=False)
@@ -133,7 +142,7 @@ parser.add_option("--skip", type='string', default='', help='list of steps to sk
 parser.add_option("--list", action='store_true', default=False, help='list the available steps')
 parser.add_option("--viewerip", default=None, help='IP address to send MAVLink and fg packets to')
 parser.add_option("--experimental", default=False, action='store_true', help='enable experimental tests')
-parser.add_option("--timeout", default=2400, type='int', help='maximum runtime in seconds')
+parser.add_option("--timeout", default=3000, type='int', help='maximum runtime in seconds')
 
 opts, args = parser.parse_args()
 
@@ -142,6 +151,7 @@ import  arducopter, arduplane, apmrover2
 steps = [
     'prerequesites',
     'build.All',
+    'build.Binaries',
     'build.Examples',
 
     'build1280.ArduPlane',
@@ -247,6 +257,9 @@ def run_step(step):
     if step == 'build.All':
         return build_all()
 
+    if step == 'build.Binaries':
+        return build_binaries()
+
     if step == 'build.Examples':
         return build_examples()
 
@@ -294,7 +307,7 @@ class TestResults(object):
 
 def write_webresults(results):
     '''write webpage results'''
-    sys.path.insert(0, os.path.join(util.reltopdir("../pymavlink/generator")))
+    sys.path.insert(0, os.path.join(util.reltopdir("../mavlink/pymavlink/generator")))
     import mavtemplate
     t = mavtemplate.MAVTemplate()
     for h in glob.glob(util.reltopdir('Tools/autotest/web/*.html')):

@@ -106,12 +106,6 @@ const AP_Param::Info var_info[] PROGMEM = {
     // @User: Advanced
 	GSCALAR(curr_amp_per_volt,      "AMP_PER_VOLT",     CURR_AMP_PER_VOLT),
 
-    // @Param: INPUT_VOLTS
-    // @DisplayName: Max internal voltage of the battery voltage and current sensing pins
-    // @Description: Used to convert the voltage read in on the voltage and current pins for battery monitoring.  Normally 5 meaning 5 volts.
-    // @User: Advanced
-	GSCALAR(input_voltage,          "INPUT_VOLTS",      INPUT_VOLTAGE),
-
     // @Param: BATT_CAPACITY
     // @DisplayName: Battery Capacity
     // @Description: Battery capacity in milliamp-hours (mAh)
@@ -213,6 +207,20 @@ const AP_Param::Info var_info[] PROGMEM = {
     // @Increment: 1
     // @User: Standard
 	GSCALAR(throttle_slewrate,      "THR_SLEWRATE",     0),
+
+    // @Param: SKID_STEER_OUT
+    // @DisplayName: Skid steering output
+    // @Description: Set this to 1 for skid steering controlled rovers (tank track style). When enabled, servo1 is used for the left track control, servo3 is used for right track control
+    // @Values: 0:Disabled, 1:SkidSteeringOutput
+    // @User: Standard
+	GSCALAR(skid_steer_out,          "SKID_STEER_OUT",     0),
+
+    // @Param: SKID_STEER_IN
+    // @DisplayName: Skid steering input
+    // @Description: Set this to 1 for skid steering input rovers (tank track style in RC controller). When enabled, servo1 is used for the left track control, servo3 is used for right track control
+    // @Values: 0:Disabled, 1:SkidSteeringOutput
+    // @User: Standard
+	GSCALAR(skid_steer_in,           "SKID_STEER_IN",     0),
 
     // @Param: FS_ACTION
     // @DisplayName: Failsafe Action

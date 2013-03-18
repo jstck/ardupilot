@@ -57,7 +57,7 @@ public:
         k_param_battery_monitoring = 140,
         k_param_volt_div_ratio,
         k_param_curr_amp_per_volt,
-        k_param_input_voltage,
+        k_param_input_voltage, // deprecated, can be deleted
         k_param_pack_capacity,
 
         //
@@ -88,6 +88,8 @@ public:
         k_param_throttle_cruise,
         k_param_throttle_slewrate,
         k_param_throttle_reduction,
+        k_param_skid_steer_in,
+        k_param_skid_steer_out,
 
         // failsafe control
         k_param_fs_action = 180,
@@ -165,7 +167,6 @@ public:
     AP_Int8	    battery_monitoring;	// 0=disabled, 3=voltage only, 4=voltage and current
     AP_Float    volt_div_ratio;
     AP_Float    curr_amp_per_volt;
-    AP_Float    input_voltage;
     AP_Int16    pack_capacity;		// Battery pack capacity less reserve    
 
     // navigation parameters
@@ -193,6 +194,8 @@ public:
     AP_Int8     throttle_max;
     AP_Int8     throttle_cruise;
     AP_Int8     throttle_slewrate;
+    AP_Int8     skid_steer_in;
+    AP_Int8     skid_steer_out;
 
     // failsafe control
     AP_Int8     fs_action;

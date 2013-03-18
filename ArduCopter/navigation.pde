@@ -24,15 +24,6 @@ static void update_navigation()
             Log_Write_Nav_Tuning();
         }
     }
-
-    // To-Do: replace below with proper GPS failsafe
-    // reduce nav outputs to zero if we have not seen a position update in 2 seconds
-    if( millis() - nav_last_update > 2000 ) {
-        // after 12 reads we guess we may have lost GPS signal, stop navigating
-        // we have lost GPS signal for a moment. Reduce our error to avoid flyaways
-        auto_roll  >>= 1;
-        auto_pitch >>= 1;
-    }
 }
 
 // run_nav_updates - top level call for the autopilot
@@ -123,6 +114,7 @@ static void run_autopilot()
             break;
         case GUIDED:
             // switch to loiter once we've reached the target location and altitude
+            // To-Do: this incorrectly checks verify_nav_wp even though the nav mode may be NAV_LOITER
             if(verify_nav_wp()) {
                 set_nav_mode(NAV_LOITER);
             }
@@ -270,9 +262,6 @@ static void verify_altitude()
 // Keeps old data out of our calculation / logs
 static void reset_nav_params(void)
 {
-    // We must be heading to a new WP, so XTrack must be 0
-    crosstrack_error                = 0;
-
     // Will be set by new command
     wp_bearing                      = 0;
 
