@@ -81,8 +81,8 @@
 #define X_FRAME 1
 #define V_FRAME 2
 
-#define Y4V_V_TAIL 0
-#define Y4V_A_TAIL 1
+#define Y4V_V_TAIL 1
+#define Y4V_A_TAIL 2
 
 // LED output
 #define NORMAL_LEDS 0
