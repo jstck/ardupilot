@@ -1145,20 +1145,22 @@ static void report_frame()
  #elif FRAME_CONFIG == Y4_FRAME
     cliSerial->printf_P(PSTR("Y4 frame\n"));
  #elif FRAME_CONFIG == Y4V_FRAME
-    #if FRAME_ORIENTATION == Y4V_V_TAIL
-      cliSerial->printf_P(PSTR("Y4V frame, V-tail\n"));
-    #else
-      cliSerial->printf_P(PSTR("Y4V frame, A-tail\n"));
-    #endif
+    cliSerial->printf_P(PSTR("Y4V frame\n"));
  #endif
 
- #if FRAME_CONFIG != HELI_FRAME && FRAME_CONFIG != Y4V_FRAME
+    cliSerial->printf_P(PSTR("frame orientation: %d\n"), (int)g.frame_orientation);
+
+ #if FRAME_CONFIG != HELI_FRAME
     if(g.frame_orientation == X_FRAME)
         cliSerial->printf_P(PSTR("X mode\n"));
     else if(g.frame_orientation == PLUS_FRAME)
         cliSerial->printf_P(PSTR("+ mode\n"));
     else if(g.frame_orientation == V_FRAME)
         cliSerial->printf_P(PSTR("V mode\n"));
+    else if(g.frame_orientation == Y4V_V_TAIL)
+        cliSerial->printf_P(PSTR("V tail\n"));
+    else if(g.frame_orientation == Y4V_A_TAIL)
+        cliSerial->printf_P(PSTR("A tail\n"));
  #endif
 
     print_blanks(2);

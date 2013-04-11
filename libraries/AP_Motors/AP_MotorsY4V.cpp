@@ -45,10 +45,10 @@ Y4V_COG         Center of gravity. The crafts center of gravity along the main a
  #define Y4V_TAIL_WIDTH 0.25
 #endif
 #ifndef Y4V_YAW_FACTOR
- #define Y4V_YAW_FACTOR 0.05
+ #define Y4V_YAW_FACTOR 0.08
 #endif
 #ifndef Y4V_COG
- #define Y4V_COG 0.333
+ #define Y4V_COG 0.4
 #endif
 
 
@@ -81,17 +81,19 @@ void AP_MotorsY4V::setup_motors()
     //Tail prop directions are different for "V" and "A" tails, and the front props are set to match.
 
 #if FRAME_ORIENTATION == Y4V_V_TAIL
-    add_motor_raw(AP_MOTORS_MOT_1,  1.0,            front_pitch, AP_MOTORS_MATRIX_MOTOR_CW / yaw_force); //Front left, CCW
-    add_motor_raw(AP_MOTORS_MOT_2, -1.0,            front_pitch, AP_MOTORS_MATRIX_MOTOR_CCW / yaw_force);  //Front right, CW
-    add_motor_raw(AP_MOTORS_MOT_3, -Y4V_TAIL_WIDTH, rear_pitch,  AP_MOTORS_MATRIX_MOTOR_CW);  //Tail right, CCW
-    add_motor_raw(AP_MOTORS_MOT_4,  Y4V_TAIL_WIDTH, rear_pitch,  AP_MOTORS_MATRIX_MOTOR_CCW); //Tail left, CW
+    add_motor_raw(AP_MOTORS_MOT_1,  1.0,            front_pitch, AP_MOTORS_MATRIX_MOTOR_CCW / yaw_force, 4); //Front left, CCW
+    add_motor_raw(AP_MOTORS_MOT_2, -1.0,            front_pitch, AP_MOTORS_MATRIX_MOTOR_CW / yaw_force, 1);  //Front right, CW
+    add_motor_raw(AP_MOTORS_MOT_3, -Y4V_TAIL_WIDTH, rear_pitch,  AP_MOTORS_MATRIX_MOTOR_CW, 2);  //Tail right, CW
+    add_motor_raw(AP_MOTORS_MOT_4,  Y4V_TAIL_WIDTH, rear_pitch,  AP_MOTORS_MATRIX_MOTOR_CCW, 3); //Tail left, CCW
 
 #else //A tail
 
-    add_motor_raw(AP_MOTORS_MOT_1,  1.0,            front_pitch, AP_MOTORS_MATRIX_MOTOR_CW / yaw_force); //Front left, CW
-    add_motor_raw(AP_MOTORS_MOT_2, -1.0,            front_pitch, AP_MOTORS_MATRIX_MOTOR_CCW / yaw_force);  //Front right, CCW
-    add_motor_raw(AP_MOTORS_MOT_3, -Y4V_TAIL_WIDTH, rear_pitch,  AP_MOTORS_MATRIX_MOTOR_CW);  //Tail right, CW
-    add_motor_raw(AP_MOTORS_MOT_4,  Y4V_TAIL_WIDTH, rear_pitch,  AP_MOTORS_MATRIX_MOTOR_CCW); //Tail left, CCW
+//    add_motor_raw(AP_MOTORS_MOT_1,  1.0,            front_pitch, AP_MOTORS_MATRIX_MOTOR_CCW / yaw_force, 4); //Front left, CCW
+//    add_motor_raw(AP_MOTORS_MOT_2, -1.0,            front_pitch, AP_MOTORS_MATRIX_MOTOR_CW / yaw_force, 1);  //Front right, CW
+    add_motor_raw(AP_MOTORS_MOT_1,  1.0,            front_pitch, 0, 4); //Front left, CCW
+    add_motor_raw(AP_MOTORS_MOT_2, -1.0,            front_pitch, 0, 1);  //Front right, CW
+    add_motor_raw(AP_MOTORS_MOT_3, -Y4V_TAIL_WIDTH, rear_pitch,  AP_MOTORS_MATRIX_MOTOR_CCW, 2);  //Tail right, CCW
+    add_motor_raw(AP_MOTORS_MOT_4,  Y4V_TAIL_WIDTH, rear_pitch,  AP_MOTORS_MATRIX_MOTOR_CW, 3); //Tail left, CW
 
 #endif
 
